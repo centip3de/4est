@@ -2,12 +2,7 @@
 
 start
     =
-    expression
-    ;
-
-expression
-    =
-    { statements } +
+    { statements }+
     ;
 
 statements
@@ -22,7 +17,7 @@ statements
 
 print_stmt
     =
-    '.' ~ (string | int | equality_stmt | pop_stmt)
+    '.' ~ (string | number | boolean | array | input_stmt | equality_stmt | pop_stmt)
     ;
 
 input_stmt
@@ -32,7 +27,7 @@ input_stmt
 
 push_stmt
     =
-    'P' ~ (string | int | boolean | equality_stmt | input_stmt | numeric_stmt)
+    'P' ~ (string | number | boolean | array | equality_stmt | input_stmt | numeric_stmt)
     ;
 
 numeric_stmt
@@ -69,11 +64,18 @@ else_term
 equality_stmt
     =
     string '=' string
-    | number '=' number
     | pop_stmt '=' string
-    | pop_stmt '=' number
     | input_stmt '=' string
-    | input_stmt '=' number
+    | number num_eq_term number
+    | pop_stmt num_eq_term number
+    | input_stmt num_eq_term number
+    | array '=' array
+    | pop_stmt '=' array
+    ;
+
+num_eq_term
+    =
+    '=' | '>' | '<'
     ;
 
 add_op
@@ -106,24 +108,29 @@ exp_op
     number '^' ~ number
     ;
 
+array
+    =
+    '[' ~ {array_term}+
+    ;
+
+array_term
+    =
+    (number | string) ';'
+    ;
+
 boolean
     =
     'T' | 'F'
     ;
 
-int
-    =
-    'D' ~ number
-    ;
-
 string
     =
-    '"' ~ letter '"'
+    '"' ~ letter_with_space '"'
     ;
 
-letter
+letter_with_space
     =
-    /[a-zA-Z]+/
+    /[a-zA-Z ]+/
     ;
 
 number

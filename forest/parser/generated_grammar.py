@@ -78,10 +78,6 @@ class ForestParser(Parser):
 
     @graken()
     def _start_(self):
-        self._expression_()
-
-    @graken()
-    def _expression_(self):
 
         def block0():
             self._statements_()
@@ -113,7 +109,13 @@ class ForestParser(Parser):
                 with self._option():
                     self._string_()
                 with self._option():
-                    self._int_()
+                    self._number_()
+                with self._option():
+                    self._boolean_()
+                with self._option():
+                    self._array_()
+                with self._option():
+                    self._input_stmt_()
                 with self._option():
                     self._equality_stmt_()
                 with self._option():
@@ -133,9 +135,11 @@ class ForestParser(Parser):
                 with self._option():
                     self._string_()
                 with self._option():
-                    self._int_()
+                    self._number_()
                 with self._option():
                     self._boolean_()
+                with self._option():
+                    self._array_()
                 with self._option():
                     self._equality_stmt_()
                 with self._option():
@@ -198,26 +202,45 @@ class ForestParser(Parser):
                 self._token('=')
                 self._string_()
             with self._option():
-                self._number_()
-                self._token('=')
-                self._number_()
-            with self._option():
                 self._pop_stmt_()
                 self._token('=')
                 self._string_()
-            with self._option():
-                self._pop_stmt_()
-                self._token('=')
-                self._number_()
             with self._option():
                 self._input_stmt_()
                 self._token('=')
                 self._string_()
             with self._option():
-                self._input_stmt_()
-                self._token('=')
                 self._number_()
+                self._num_eq_term_()
+                self._number_()
+            with self._option():
+                self._pop_stmt_()
+                self._num_eq_term_()
+                self._number_()
+            with self._option():
+                self._input_stmt_()
+                self._num_eq_term_()
+                self._number_()
+            with self._option():
+                self._array_()
+                self._token('=')
+                self._array_()
+            with self._option():
+                self._pop_stmt_()
+                self._token('=')
+                self._array_()
             self._error('no available options')
+
+    @graken()
+    def _num_eq_term_(self):
+        with self._choice():
+            with self._option():
+                self._token('=')
+            with self._option():
+                self._token('>')
+            with self._option():
+                self._token('<')
+            self._error('expecting one of: < = >')
 
     @graken()
     def _add_op_(self):
@@ -262,6 +285,26 @@ class ForestParser(Parser):
         self._number_()
 
     @graken()
+    def _array_(self):
+        self._token('[')
+        self._cut()
+
+        def block0():
+            self._array_term_()
+        self._positive_closure(block0)
+
+    @graken()
+    def _array_term_(self):
+        with self._group():
+            with self._choice():
+                with self._option():
+                    self._number_()
+                with self._option():
+                    self._string_()
+                self._error('no available options')
+        self._token(';')
+
+    @graken()
     def _boolean_(self):
         with self._choice():
             with self._option():
@@ -271,21 +314,15 @@ class ForestParser(Parser):
             self._error('expecting one of: F T')
 
     @graken()
-    def _int_(self):
-        self._token('D')
-        self._cut()
-        self._number_()
-
-    @graken()
     def _string_(self):
         self._token('"')
         self._cut()
-        self._letter_()
+        self._letter_with_space_()
         self._token('"')
 
     @graken()
-    def _letter_(self):
-        self._pattern(r'[a-zA-Z]+')
+    def _letter_with_space_(self):
+        self._pattern(r'[a-zA-Z ]+')
 
     @graken()
     def _number_(self):
@@ -294,9 +331,6 @@ class ForestParser(Parser):
 
 class ForestSemantics(object):
     def start(self, ast):
-        return ast
-
-    def expression(self, ast):
         return ast
 
     def statements(self, ast):
@@ -329,6 +363,9 @@ class ForestSemantics(object):
     def equality_stmt(self, ast):
         return ast
 
+    def num_eq_term(self, ast):
+        return ast
+
     def add_op(self, ast):
         return ast
 
@@ -347,16 +384,19 @@ class ForestSemantics(object):
     def exp_op(self, ast):
         return ast
 
-    def boolean(self, ast):
+    def array(self, ast):
         return ast
 
-    def int(self, ast):
+    def array_term(self, ast):
+        return ast
+
+    def boolean(self, ast):
         return ast
 
     def string(self, ast):
         return ast
 
-    def letter(self, ast):
+    def letter_with_space(self, ast):
         return ast
 
     def number(self, ast):
