@@ -13,11 +13,24 @@ statements
     | equality_stmt
     | input_stmt
     | push_stmt
+    | length_stmt
+    | iterate_stmt
+    | range_stmt
+    ;
+
+iterate_stmt
+    =
+    'I' ~ (boolean | pop_stmt | equality_stmt | number | length_stmt | string | array | range_stmt)
+    ;
+
+range_stmt
+    =
+    'R' ~ (number | length_stmt)
     ;
 
 print_stmt
     =
-    '.' ~ (string | number | boolean | array | input_stmt | equality_stmt | pop_stmt)
+    '.' ~ (push_term | pop_stmt)
     ;
 
 input_stmt
@@ -27,7 +40,19 @@ input_stmt
 
 push_stmt
     =
-    'P' ~ (string | number | boolean | array | equality_stmt | input_stmt | numeric_stmt)
+    'P' ~ push_term
+    ;
+
+push_term
+    =
+    string
+    | number
+    | boolean
+    | array
+    | equality_stmt
+    | input_stmt
+    | numeric_stmt
+    | length_stmt
     ;
 
 numeric_stmt
@@ -69,8 +94,14 @@ equality_stmt
     | number num_eq_term number
     | pop_stmt num_eq_term number
     | input_stmt num_eq_term number
+    | length_stmt num_eq_term number
     | array '=' array
     | pop_stmt '=' array
+    ;
+
+length_stmt
+    =
+    'L' ~ (array|string|input_stmt)
     ;
 
 num_eq_term

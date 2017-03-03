@@ -98,7 +98,49 @@ class ForestParser(Parser):
                 self._input_stmt_()
             with self._option():
                 self._push_stmt_()
+            with self._option():
+                self._length_stmt_()
+            with self._option():
+                self._iterate_stmt_()
+            with self._option():
+                self._range_stmt_()
             self._error('no available options')
+
+    @graken()
+    def _iterate_stmt_(self):
+        self._token('I')
+        self._cut()
+        with self._group():
+            with self._choice():
+                with self._option():
+                    self._boolean_()
+                with self._option():
+                    self._pop_stmt_()
+                with self._option():
+                    self._equality_stmt_()
+                with self._option():
+                    self._number_()
+                with self._option():
+                    self._length_stmt_()
+                with self._option():
+                    self._string_()
+                with self._option():
+                    self._array_()
+                with self._option():
+                    self._range_stmt_()
+                self._error('no available options')
+
+    @graken()
+    def _range_stmt_(self):
+        self._token('R')
+        self._cut()
+        with self._group():
+            with self._choice():
+                with self._option():
+                    self._number_()
+                with self._option():
+                    self._length_stmt_()
+                self._error('no available options')
 
     @graken()
     def _print_stmt_(self):
@@ -107,17 +149,7 @@ class ForestParser(Parser):
         with self._group():
             with self._choice():
                 with self._option():
-                    self._string_()
-                with self._option():
-                    self._number_()
-                with self._option():
-                    self._boolean_()
-                with self._option():
-                    self._array_()
-                with self._option():
-                    self._input_stmt_()
-                with self._option():
-                    self._equality_stmt_()
+                    self._push_term_()
                 with self._option():
                     self._pop_stmt_()
                 self._error('no available options')
@@ -130,23 +162,28 @@ class ForestParser(Parser):
     def _push_stmt_(self):
         self._token('P')
         self._cut()
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._string_()
-                with self._option():
-                    self._number_()
-                with self._option():
-                    self._boolean_()
-                with self._option():
-                    self._array_()
-                with self._option():
-                    self._equality_stmt_()
-                with self._option():
-                    self._input_stmt_()
-                with self._option():
-                    self._numeric_stmt_()
-                self._error('no available options')
+        self._push_term_()
+
+    @graken()
+    def _push_term_(self):
+        with self._choice():
+            with self._option():
+                self._string_()
+            with self._option():
+                self._number_()
+            with self._option():
+                self._boolean_()
+            with self._option():
+                self._array_()
+            with self._option():
+                self._equality_stmt_()
+            with self._option():
+                self._input_stmt_()
+            with self._option():
+                self._numeric_stmt_()
+            with self._option():
+                self._length_stmt_()
+            self._error('no available options')
 
     @graken()
     def _numeric_stmt_(self):
@@ -222,6 +259,10 @@ class ForestParser(Parser):
                 self._num_eq_term_()
                 self._number_()
             with self._option():
+                self._length_stmt_()
+                self._num_eq_term_()
+                self._number_()
+            with self._option():
                 self._array_()
                 self._token('=')
                 self._array_()
@@ -230,6 +271,20 @@ class ForestParser(Parser):
                 self._token('=')
                 self._array_()
             self._error('no available options')
+
+    @graken()
+    def _length_stmt_(self):
+        self._token('L')
+        self._cut()
+        with self._group():
+            with self._choice():
+                with self._option():
+                    self._array_()
+                with self._option():
+                    self._string_()
+                with self._option():
+                    self._input_stmt_()
+                self._error('no available options')
 
     @graken()
     def _num_eq_term_(self):
@@ -336,6 +391,12 @@ class ForestSemantics(object):
     def statements(self, ast):
         return ast
 
+    def iterate_stmt(self, ast):
+        return ast
+
+    def range_stmt(self, ast):
+        return ast
+
     def print_stmt(self, ast):
         return ast
 
@@ -343,6 +404,9 @@ class ForestSemantics(object):
         return ast
 
     def push_stmt(self, ast):
+        return ast
+
+    def push_term(self, ast):
         return ast
 
     def numeric_stmt(self, ast):
@@ -361,6 +425,9 @@ class ForestSemantics(object):
         return ast
 
     def equality_stmt(self, ast):
+        return ast
+
+    def length_stmt(self, ast):
         return ast
 
     def num_eq_term(self, ast):
