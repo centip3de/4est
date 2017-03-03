@@ -80,11 +80,11 @@ class ForestParser(Parser):
     def _start_(self):
 
         def block0():
-            self._statements_()
+            self._statement_()
         self._positive_closure(block0)
 
     @graken()
-    def _statements_(self):
+    def _statement_(self):
         with self._choice():
             with self._option():
                 self._numeric_stmt_()
@@ -222,14 +222,14 @@ class ForestParser(Parser):
                 with self._option():
                     self._boolean_()
                 self._error('no available options')
-        self._statements_()
+        self._statement_()
 
     @graken()
     def _else_term_(self):
         self._token('#')
         self._cut()
         with self._group():
-            self._statements_()
+            self._statement_()
 
     @graken()
     def _equality_stmt_(self):
@@ -363,10 +363,20 @@ class ForestParser(Parser):
     def _boolean_(self):
         with self._choice():
             with self._option():
-                self._token('T')
+                self._true_()
             with self._option():
-                self._token('F')
-            self._error('expecting one of: F T')
+                self._false_()
+            self._error('no available options')
+
+    @graken()
+    def _true_(self):
+        self._token('T')
+        self._cut()
+
+    @graken()
+    def _false_(self):
+        self._token('F')
+        self._cut()
 
     @graken()
     def _string_(self):
@@ -388,7 +398,7 @@ class ForestSemantics(object):
     def start(self, ast):
         return ast
 
-    def statements(self, ast):
+    def statement(self, ast):
         return ast
 
     def iterate_stmt(self, ast):
@@ -458,6 +468,12 @@ class ForestSemantics(object):
         return ast
 
     def boolean(self, ast):
+        return ast
+
+    def true(self, ast):
+        return ast
+
+    def false(self, ast):
         return ast
 
     def string(self, ast):

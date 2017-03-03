@@ -2,10 +2,10 @@
 
 start
     =
-    { statements }+
+    { statement }+
     ;
 
-statements
+statement
     =
     numeric_stmt
     | if_stmt
@@ -78,12 +78,12 @@ if_stmt
 
 if_term
     =
-    '?' ~ (equality_stmt | boolean) statements
+    '?' ~ (boolean | equality_stmt) statement
     ;
 
 else_term
     =
-    '#' ~ (statements)
+    '#' ~ (statement)
     ;
 
 equality_stmt
@@ -151,7 +151,17 @@ array_term
 
 boolean
     =
-    'T' | 'F'
+    true | false
+    ;
+
+true
+    =
+    'T' ~
+    ;
+
+false
+    =
+    'F' ~
     ;
 
 string
