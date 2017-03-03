@@ -26,7 +26,7 @@ class ForestBuffer(Buffer):
         self,
         text,
         whitespace=None,
-        nameguard=None,
+        nameguard=False,
         comments_re=None,
         eol_comments_re=None,
         ignorecase=None,
@@ -49,7 +49,7 @@ class ForestParser(Parser):
     def __init__(
         self,
         whitespace=None,
-        nameguard=None,
+        nameguard=False,
         comments_re=None,
         eol_comments_re=None,
         ignorecase=None,

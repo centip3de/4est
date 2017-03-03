@@ -12,6 +12,5 @@ class Stack():
     def peek(self):
         return self.mem[-1]
 
-class AST():
-    def __init__(self):
-        pass
+    def print_stack(self):
+        print("Stack: ", self.mem)

@@ -1,5 +1,5 @@
 @@grammar::Forest
-:xa
+@@nameguard :: False
 
 start
     =
