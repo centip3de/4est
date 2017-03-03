@@ -1,1 +1,1 @@
-?T."FOO"#."BAR"?2=2P2#P3
+IRL,."Foo"E

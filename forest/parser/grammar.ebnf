@@ -2,17 +2,17 @@
 
 start
     =
-    { statement }+
+    {statement}+
     ;
 
 statement
     =
-    numeric_stmt
+    | push_stmt
+    | numeric_stmt
     | if_stmt
     | print_stmt
     | equality_stmt
     | input_stmt
-    | push_stmt
     | length_stmt
     | iterate_stmt
     | range_stmt
@@ -20,17 +20,17 @@ statement
 
 iterate_stmt
     =
-    'I' ~ (boolean | pop_stmt | equality_stmt | number | length_stmt | string | array | range_stmt)
+    'I' (boolean | pop_stmt | equality_stmt | number | length_stmt | string | array | range_stmt) {statement}+ 'E'
     ;
 
 range_stmt
     =
-    'R' ~ (number | length_stmt)
+    'R' (number | length_stmt)
     ;
 
 print_stmt
     =
-    '.' ~ (push_term | pop_stmt)
+    '.' (push_term | pop_stmt)
     ;
 
 input_stmt
@@ -40,12 +40,12 @@ input_stmt
 
 push_stmt
     =
-    'P' ~ push_term
+    'P' push_term
     ;
 
 push_term
     =
-    string
+    | string
     | number
     | boolean
     | array
@@ -57,7 +57,7 @@ push_term
 
 numeric_stmt
     =
-    add_op
+    | add_op
     | sub_op
     | div_op
     | exp_op
@@ -78,17 +78,17 @@ if_stmt
 
 if_term
     =
-    '?' ~ (boolean | equality_stmt) statement
+    '?' (boolean | equality_stmt) {statement}+
     ;
 
 else_term
     =
-    '#' ~ (statement)
+    '#' {statement}+
     ;
 
 equality_stmt
     =
-    string '=' string
+    | string '=' string
     | pop_stmt '=' string
     | input_stmt '=' string
     | number num_eq_term number
@@ -97,51 +97,52 @@ equality_stmt
     | length_stmt num_eq_term number
     | array '=' array
     | pop_stmt '=' array
+    | boolean '=' boolean
     ;
 
 length_stmt
     =
-    'L' ~ (array|string|input_stmt)
+    'L' ( array | string | input_stmt)
     ;
 
 num_eq_term
     =
-    '=' | '>' | '<'
+    ('=' | '>' | '<')
     ;
 
 add_op
     =
-    number '+' ~ number
+    number '+' number
     ;
 
 sub_op
     =
-    number '-' ~ number
+    number '-' number
     ;
 
 div_op
     =
-    number '/' ~ number
+    number '/' number
     ;
 
 mul_op
     =
-    number '*' ~ number
+    number '*' number
     ;
 
 mod_op
     =
-    number '%' ~ number
+    number '%' number
     ;
 
 exp_op
     =
-    number '^' ~ number
+    number '^' number
     ;
 
 array
     =
-    '[' ~ {array_term}+
+    '[' {array_term}+
     ;
 
 array_term
@@ -156,17 +157,17 @@ boolean
 
 true
     =
-    'T' ~
+    'T'
     ;
 
 false
     =
-    'F' ~
+    'F'
     ;
 
 string
     =
-    '"' ~ letter_with_space '"'
+    '"' letter_with_space '"'
     ;
 
 letter_with_space

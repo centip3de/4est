@@ -87,6 +87,8 @@ class ForestParser(Parser):
     def _statement_(self):
         with self._choice():
             with self._option():
+                self._push_stmt_()
+            with self._option():
                 self._numeric_stmt_()
             with self._option():
                 self._if_stmt_()
@@ -96,8 +98,6 @@ class ForestParser(Parser):
                 self._equality_stmt_()
             with self._option():
                 self._input_stmt_()
-            with self._option():
-                self._push_stmt_()
             with self._option():
                 self._length_stmt_()
             with self._option():
@@ -109,7 +109,6 @@ class ForestParser(Parser):
     @graken()
     def _iterate_stmt_(self):
         self._token('I')
-        self._cut()
         with self._group():
             with self._choice():
                 with self._option():
@@ -130,10 +129,14 @@ class ForestParser(Parser):
                     self._range_stmt_()
                 self._error('no available options')
 
+        def block1():
+            self._statement_()
+        self._positive_closure(block1)
+        self._token('E')
+
     @graken()
     def _range_stmt_(self):
         self._token('R')
-        self._cut()
         with self._group():
             with self._choice():
                 with self._option():
@@ -145,7 +148,6 @@ class ForestParser(Parser):
     @graken()
     def _print_stmt_(self):
         self._token('.')
-        self._cut()
         with self._group():
             with self._choice():
                 with self._option():
@@ -161,7 +163,6 @@ class ForestParser(Parser):
     @graken()
     def _push_stmt_(self):
         self._token('P')
-        self._cut()
         self._push_term_()
 
     @graken()
@@ -214,22 +215,25 @@ class ForestParser(Parser):
     @graken()
     def _if_term_(self):
         self._token('?')
-        self._cut()
         with self._group():
             with self._choice():
                 with self._option():
-                    self._equality_stmt_()
-                with self._option():
                     self._boolean_()
+                with self._option():
+                    self._equality_stmt_()
                 self._error('no available options')
-        self._statement_()
+
+        def block1():
+            self._statement_()
+        self._positive_closure(block1)
 
     @graken()
     def _else_term_(self):
         self._token('#')
-        self._cut()
-        with self._group():
+
+        def block0():
             self._statement_()
+        self._positive_closure(block0)
 
     @graken()
     def _equality_stmt_(self):
@@ -270,12 +274,15 @@ class ForestParser(Parser):
                 self._pop_stmt_()
                 self._token('=')
                 self._array_()
+            with self._option():
+                self._boolean_()
+                self._token('=')
+                self._boolean_()
             self._error('no available options')
 
     @graken()
     def _length_stmt_(self):
         self._token('L')
-        self._cut()
         with self._group():
             with self._choice():
                 with self._option():
@@ -288,61 +295,55 @@ class ForestParser(Parser):
 
     @graken()
     def _num_eq_term_(self):
-        with self._choice():
-            with self._option():
-                self._token('=')
-            with self._option():
-                self._token('>')
-            with self._option():
-                self._token('<')
-            self._error('expecting one of: < = >')
+        with self._group():
+            with self._choice():
+                with self._option():
+                    self._token('=')
+                with self._option():
+                    self._token('>')
+                with self._option():
+                    self._token('<')
+                self._error('expecting one of: < = >')
 
     @graken()
     def _add_op_(self):
         self._number_()
         self._token('+')
-        self._cut()
         self._number_()
 
     @graken()
     def _sub_op_(self):
         self._number_()
         self._token('-')
-        self._cut()
         self._number_()
 
     @graken()
     def _div_op_(self):
         self._number_()
         self._token('/')
-        self._cut()
         self._number_()
 
     @graken()
     def _mul_op_(self):
         self._number_()
         self._token('*')
-        self._cut()
         self._number_()
 
     @graken()
     def _mod_op_(self):
         self._number_()
         self._token('%')
-        self._cut()
         self._number_()
 
     @graken()
     def _exp_op_(self):
         self._number_()
         self._token('^')
-        self._cut()
         self._number_()
 
     @graken()
     def _array_(self):
         self._token('[')
-        self._cut()
 
         def block0():
             self._array_term_()
@@ -371,17 +372,14 @@ class ForestParser(Parser):
     @graken()
     def _true_(self):
         self._token('T')
-        self._cut()
 
     @graken()
     def _false_(self):
         self._token('F')
-        self._cut()
 
     @graken()
     def _string_(self):
         self._token('"')
-        self._cut()
         self._letter_with_space_()
         self._token('"')
 
