@@ -1,0 +1,132 @@
+@@grammar::Forest
+
+start
+    =
+    expression
+    ;
+
+expression
+    =
+    { statements } +
+    ;
+
+statements
+    =
+    numeric_stmt
+    | if_stmt
+    | print_stmt
+    | equality_stmt
+    | input_stmt
+    | push_stmt
+    ;
+
+print_stmt
+    =
+    '.' ~ (string | int | equality_stmt | pop_stmt)
+    ;
+
+input_stmt
+    =
+    ','
+    ;
+
+push_stmt
+    =
+    'P' ~ (string | int | boolean | equality_stmt | input_stmt | numeric_stmt)
+    ;
+
+numeric_stmt
+    =
+    add_op
+    | sub_op
+    | div_op
+    | exp_op
+    | mul_op
+    | mod_op
+    ;
+
+pop_stmt
+    =
+    'O'
+    ;
+
+if_stmt
+    =
+    if_term
+    else_term
+    ;
+
+if_term
+    =
+    '?' ~ (equality_stmt | boolean) statements
+    ;
+
+else_term
+    =
+    '#' ~ (statements)
+    ;
+
+equality_stmt
+    =
+    string '=' string
+    | number '=' number
+    | pop_stmt '=' string
+    | pop_stmt '=' number
+    | input_stmt '=' string
+    | input_stmt '=' number
+    ;
+
+add_op
+    =
+    number '+' ~ number
+    ;
+
+sub_op
+    =
+    number '-' ~ number
+    ;
+
+div_op
+    =
+    number '/' ~ number
+    ;
+
+mul_op
+    =
+    number '*' ~ number
+    ;
+
+mod_op
+    =
+    number '%' ~ number
+    ;
+
+exp_op
+    =
+    number '^' ~ number
+    ;
+
+boolean
+    =
+    'T' | 'F'
+    ;
+
+int
+    =
+    'D' ~ number
+    ;
+
+string
+    =
+    '"' ~ letter '"'
+    ;
+
+letter
+    =
+    /[a-zA-Z]+/
+    ;
+
+number
+    =
+    /\d+/
+    ;
