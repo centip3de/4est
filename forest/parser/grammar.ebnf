@@ -32,12 +32,12 @@ input
 
 if
     =
-    '?' statement else
+    '?' {statement}+ else '?'
     ;
 
 else
     =
-    '#' statement
+    '#' {statement}+
     ;
 
 equality

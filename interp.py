@@ -78,9 +78,11 @@ class Interpreter():
 
         elif node[0] == '?':
             if self.stack.peek():
-                self.step(node[1])
+                for op in node[1]:
+                    self.step(op)
             else:
-                self.step(node[2])
+                for op in node[1]:
+                    self.step(op)
 
         elif node[0] == '#':
             self.step(node[1])

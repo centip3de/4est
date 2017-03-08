@@ -125,13 +125,20 @@ class ForestParser(Parser):
     @graken()
     def _if_(self):
         self._token('?')
-        self._statement_()
+
+        def block0():
+            self._statement_()
+        self._positive_closure(block0)
         self._else_()
+        self._token('?')
 
     @graken()
     def _else_(self):
         self._token('#')
-        self._statement_()
+
+        def block0():
+            self._statement_()
+        self._positive_closure(block0)
 
     @graken()
     def _equality_(self):
