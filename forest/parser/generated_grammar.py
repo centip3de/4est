@@ -103,8 +103,50 @@ class ForestParser(Parser):
             with self._option():
                 self._mul_()
             with self._option():
+                self._mod_()
+            with self._option():
+                self._pow_()
+            with self._option():
                 self._div_()
+            with self._option():
+                self._if_()
+            with self._option():
+                self._equality_()
+            with self._option():
+                self._iterate_()
             self._error('no available options')
+
+    @graken()
+    def _if_(self):
+        self._token('?')
+        self._statement_()
+        self._else_()
+
+    @graken()
+    def _else_(self):
+        self._token('#')
+        self._statement_()
+
+    @graken()
+    def _equality_(self):
+        self._token('=')
+
+    @graken()
+    def _iterate_(self):
+        self._token('I')
+
+        def block0():
+            self._statement_()
+        self._positive_closure(block0)
+        self._token('E')
+
+    @graken()
+    def _pow_(self):
+        self._token('^')
+
+    @graken()
+    def _mod_(self):
+        self._token('%')
 
     @graken()
     def _add_(self):
@@ -183,6 +225,24 @@ class ForestSemantics(object):
         return ast
 
     def statement(self, ast):
+        return ast
+
+    def if_(self, ast):
+        return ast
+
+    def else_(self, ast):
+        return ast
+
+    def equality(self, ast):
+        return ast
+
+    def iterate(self, ast):
+        return ast
+
+    def pow(self, ast):
+        return ast
+
+    def mod(self, ast):
         return ast
 
     def add(self, ast):

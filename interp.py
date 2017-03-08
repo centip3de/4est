@@ -14,22 +14,22 @@ class Interpreter():
     def step(self, node):
         self.stack.print_stack()
         if node[0] == 'D':
-            self.stack.push(node[1])
+            self.stack.push(int(node[1]))
 
         elif node[0] == '"':
             self.stack.push(node[1])
 
         elif node[0] == 'T':
-            self.stack.push(node[0])
+            self.stack.push(True)
 
         elif node[0] == 'F':
-            self.stack.push(node[0])
+            self.stack.push(False)
 
         elif node[0] == 'O':
             self.stack.pop()
 
         elif node[0] == '.':
-            print(self.stack.peek())
+            print(str(self.stack.peek()))
 
         elif node[0] == 'U':
             self.stack.push(self.stack.peek())
@@ -41,24 +41,58 @@ class Interpreter():
             self.stack.push(bot)
 
         elif node[0] == '+':
-            left = int(self.stack.pop())
-            right = int(self.stack.pop())
+            left = self.stack.pop()
+            right = self.stack.pop()
             self.stack.push(left + right)
 
         elif node[0] == '-':
-            left = int(self.stack.pop())
-            right = int(self.stack.pop())
+            left = self.stack.pop()
+            right = self.stack.pop()
             self.stack.push(left - right)
 
         elif node[0] == '*':
-            left = int(self.stack.pop())
-            right = int(self.stack.pop())
+            left = self.stack.pop()
+            right = self.stack.pop()
             self.stack.push(left * right)
 
         elif node[0] == '/':
-            left = int(self.stack.pop())
-            right = int(self.stack.pop())
+            left = self.stack.pop()
+            right = self.stack.pop()
             self.stack.push(left / right)
+
+        elif node[0] == '%':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(left % pop)
+
+        elif node[0] == '^':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(pow(left, right))
+
+        elif node[0] == '=':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(left == right)
+
+        elif node[0] == '?':
+            if self.stack.peek():
+                self.step(node[1])
+            else:
+                self.step(node[2])
+
+        elif node[0] == '#':
+            self.step(node[1])
+
+        elif node[0] == 'I':
+            while self.stack.peek():
+                for op in node[1]:
+                    self.step(op)
+            else:
+                return
+
+        elif node[0] == 'E':
+            return
 
         else:
             raise Exception("Not a parsable node: " + node)

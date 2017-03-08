@@ -16,7 +16,42 @@ statement
     | add
     | sub
     | mul
+    | mod
+    | pow
     | div
+    | if
+    | equality
+    | iterate
+    ;
+
+if
+    =
+    '?' statement else
+    ;
+
+else
+    =
+    '#' statement
+    ;
+
+equality
+    =
+    '='
+    ;
+
+iterate
+    =
+    'I' {statement}+ 'E'
+    ;
+
+pow
+    =
+    '^'
+    ;
+
+mod
+    =
+    '%'
     ;
 
 add
