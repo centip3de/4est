@@ -23,6 +23,19 @@ statement
     | if
     | equality
     | iterate
+    | clear
+    | negate
+    | bot
+    ;
+
+bot
+    =
+    '$'
+    ;
+
+clear
+    =
+    'C'
     ;
 
 input
@@ -32,12 +45,18 @@ input
 
 if
     =
-    '?' {statement}+ else '?'
+    '?' {statement}+ else '|'
     ;
 
 else
     =
-    '#' {statement}+
+    | '#' {statement}+
+    | '#'
+    ;
+
+negate
+    =
+    '!'
     ;
 
 equality

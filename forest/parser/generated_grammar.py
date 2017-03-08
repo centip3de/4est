@@ -116,7 +116,21 @@ class ForestParser(Parser):
                 self._equality_()
             with self._option():
                 self._iterate_()
+            with self._option():
+                self._clear_()
+            with self._option():
+                self._negate_()
+            with self._option():
+                self._bot_()
             self._error('no available options')
+
+    @graken()
+    def _bot_(self):
+        self._token('$')
+
+    @graken()
+    def _clear_(self):
+        self._token('C')
 
     @graken()
     def _input_(self):
@@ -130,15 +144,24 @@ class ForestParser(Parser):
             self._statement_()
         self._positive_closure(block0)
         self._else_()
-        self._token('?')
+        self._token('|')
 
     @graken()
     def _else_(self):
-        self._token('#')
+        with self._choice():
+            with self._option():
+                self._token('#')
 
-        def block0():
-            self._statement_()
-        self._positive_closure(block0)
+                def block0():
+                    self._statement_()
+                self._positive_closure(block0)
+            with self._option():
+                self._token('#')
+            self._error('expecting one of: #')
+
+    @graken()
+    def _negate_(self):
+        self._token('!')
 
     @graken()
     def _equality_(self):
@@ -240,6 +263,12 @@ class ForestSemantics(object):
     def statement(self, ast):
         return ast
 
+    def bot(self, ast):
+        return ast
+
+    def clear(self, ast):
+        return ast
+
     def input(self, ast):
         return ast
 
@@ -247,6 +276,9 @@ class ForestSemantics(object):
         return ast
 
     def else_(self, ast):
+        return ast
+
+    def negate(self, ast):
         return ast
 
     def equality(self, ast):

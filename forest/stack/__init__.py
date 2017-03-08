@@ -14,3 +14,11 @@ class Stack():
 
     def print_stack(self):
         print("Stack: ", self.mem)
+
+    def clear_stack(self):
+        self.mem = []
+
+    def remove_all_but_bot(self):
+        bot = self.mem[0]
+        self.clear_stack()
+        self.push(bot)
