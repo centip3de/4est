@@ -1,5 +1,6 @@
 import os.path
 import sys
+import traceback
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
@@ -63,7 +64,7 @@ class Interpreter():
         elif node[0] == '%':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left % pop)
+            self.stack.push(left % right)
 
         elif node[0] == '^':
             left = self.stack.pop()
@@ -85,6 +86,8 @@ class Interpreter():
             self.step(node[1])
 
         elif node[0] == 'I':
+            # While the value on the top of the stack is True,
+            # step through and execute the "inner body"
             while self.stack.peek():
                 for op in node[1]:
                     self.step(op)
@@ -93,6 +96,13 @@ class Interpreter():
 
         elif node[0] == 'E':
             return
+
+        elif node[0] == ',':
+            user_input = input("")
+            if user_input.isnumeric():
+                user_input = int(user_input)
+
+            self.stack.push(user_input)
 
         else:
             raise Exception("Not a parsable node: " + node)
@@ -117,3 +127,4 @@ if __name__ == "__main__":
 
             except Exception as e:
                 print("ERROR: " + str(e))
+                traceback.print_exc()

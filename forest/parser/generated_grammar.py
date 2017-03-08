@@ -89,6 +89,8 @@ class ForestParser(Parser):
             with self._option():
                 self._print_()
             with self._option():
+                self._input_()
+            with self._option():
                 self._pop_()
             with self._option():
                 self._value_()
@@ -115,6 +117,10 @@ class ForestParser(Parser):
             with self._option():
                 self._iterate_()
             self._error('no available options')
+
+    @graken()
+    def _input_(self):
+        self._token(',')
 
     @graken()
     def _if_(self):
@@ -225,6 +231,9 @@ class ForestSemantics(object):
         return ast
 
     def statement(self, ast):
+        return ast
+
+    def input(self, ast):
         return ast
 
     def if_(self, ast):

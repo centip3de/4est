@@ -9,6 +9,7 @@ start
 statement
     =
     | print
+    | input
     | pop
     | value
     | dup
@@ -22,6 +23,11 @@ statement
     | if
     | equality
     | iterate
+    ;
+
+input
+    =
+    ','
     ;
 
 if
