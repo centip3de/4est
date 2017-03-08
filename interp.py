@@ -11,63 +11,57 @@ class Interpreter():
     def __init__(self):
         self.stack = Stack()
 
-    def step(self, ast):
-        op = ast[0]
+    def step(self, node):
+        self.stack.print_stack()
+        if node[0] == 'D':
+            self.stack.push(node[1])
 
-        # Embedded command, process
-        if isinstance(op, list):
-            print("Found embedded command {}, following".format(op))
-            return self.step(ast[0])
+        elif node[0] == '"':
+            self.stack.push(node[1])
 
-        if op == '.':
-            to_print = ""
-            if ast[1] == 'O':
-                to_print = self.stack.pop()
+        elif node[0] == 'T':
+            self.stack.push(node[0])
 
-            elif ast[1] == '"':
-                i = 2
-                while ast[i] != '"':
-                    to_print += ast[i]
-                    i += 1
+        elif node[0] == 'F':
+            self.stack.push(node[0])
 
-            elif ast[1] == "T":
-                to_print = "true"
+        elif node[0] == 'O':
+            self.stack.pop()
 
-            elif ast[1] == "F":
-                to_print = "false"
+        elif node[0] == '.':
+            print(self.stack.peek())
 
-            # Assume it's an integer now
-            elif ast[1].isnumeric():
-                    to_print = ast[1]
-            else:
-                raise Exception("Couldn't find a valid thing to print.")
+        elif node[0] == 'U':
+            self.stack.push(self.stack.peek())
 
-            print("Result: " + to_print)
-            return to_print
+        elif node[0] == 'S':
+            top = self.stack.pop()
+            bot = self.stack.pop()
+            self.stack.push(top)
+            self.stack.push(bot)
 
-        elif op == 'P':
-            to_push = ""
-            if ast[1] == '"':
-                i = 2
-                while ast[i] != '"':
-                    to_push += ast[i]
-                    i += 1
+        elif node[0] == '+':
+            left = int(self.stack.pop())
+            right = int(self.stack.pop())
+            self.stack.push(left + right)
 
-            elif ast[1].isnumeric():
-                to_push = ast[1]
+        elif node[0] == '-':
+            left = int(self.stack.pop())
+            right = int(self.stack.pop())
+            self.stack.push(left - right)
 
-            elif ast[1] == "T":
-                to_push = "true"
+        elif node[0] == '*':
+            left = int(self.stack.pop())
+            right = int(self.stack.pop())
+            self.stack.push(left * right)
 
-            elif ast[1] == "F":
-                to_push = "false"
+        elif node[0] == '/':
+            left = int(self.stack.pop())
+            right = int(self.stack.pop())
+            self.stack.push(left / right)
 
-            else:
-                raise Exception("Couldn't find a valid thing to push.")
-
-            self.stack.push(to_push)
-            self.stack.print_stack()
-            return to_push
+        else:
+            raise Exception("Not a parsable node: " + node)
 
 if __name__ == "__main__":
     parser = ForestParser()
@@ -84,5 +78,8 @@ if __name__ == "__main__":
 
                 for op in ast:
                     interp.step(op)
+
+                interp.stack.print_stack()
+
             except Exception as e:
-                print(e)
+                print("ERROR: " + str(e))

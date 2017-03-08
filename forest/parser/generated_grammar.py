@@ -87,309 +87,95 @@ class ForestParser(Parser):
     def _statement_(self):
         with self._choice():
             with self._option():
-                self._push_stmt_()
+                self._print_()
             with self._option():
-                self._numeric_stmt_()
+                self._pop_()
             with self._option():
-                self._if_stmt_()
+                self._value_()
             with self._option():
-                self._print_stmt_()
+                self._dup_()
             with self._option():
-                self._equality_stmt_()
+                self._swap_()
             with self._option():
-                self._input_stmt_()
+                self._add_()
             with self._option():
-                self._length_stmt_()
+                self._sub_()
             with self._option():
-                self._iterate_stmt_()
+                self._mul_()
             with self._option():
-                self._range_stmt_()
+                self._div_()
             self._error('no available options')
 
     @graken()
-    def _iterate_stmt_(self):
-        self._token('I')
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._boolean_()
-                with self._option():
-                    self._pop_stmt_()
-                with self._option():
-                    self._equality_stmt_()
-                with self._option():
-                    self._number_()
-                with self._option():
-                    self._length_stmt_()
-                with self._option():
-                    self._string_()
-                with self._option():
-                    self._array_()
-                with self._option():
-                    self._range_stmt_()
-                self._error('no available options')
-
-        def block1():
-            self._statement_()
-        self._positive_closure(block1)
-        self._token('E')
+    def _add_(self):
+        self._token('+')
 
     @graken()
-    def _range_stmt_(self):
-        self._token('R')
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._number_()
-                with self._option():
-                    self._length_stmt_()
-                self._error('no available options')
+    def _sub_(self):
+        self._token('-')
 
     @graken()
-    def _print_stmt_(self):
+    def _mul_(self):
+        self._token('*')
+
+    @graken()
+    def _div_(self):
+        self._token('/')
+
+    @graken()
+    def _dup_(self):
+        self._token('U')
+
+    @graken()
+    def _swap_(self):
+        self._token('S')
+
+    @graken()
+    def _print_(self):
         self._token('.')
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._push_term_()
-                with self._option():
-                    self._pop_stmt_()
-                self._error('no available options')
 
     @graken()
-    def _input_stmt_(self):
-        self._token(',')
-
-    @graken()
-    def _push_stmt_(self):
-        self._token('P')
-        self._push_term_()
-
-    @graken()
-    def _push_term_(self):
-        with self._choice():
-            with self._option():
-                self._string_()
-            with self._option():
-                self._number_()
-            with self._option():
-                self._boolean_()
-            with self._option():
-                self._array_()
-            with self._option():
-                self._equality_stmt_()
-            with self._option():
-                self._input_stmt_()
-            with self._option():
-                self._numeric_stmt_()
-            with self._option():
-                self._length_stmt_()
-            self._error('no available options')
-
-    @graken()
-    def _numeric_stmt_(self):
-        with self._choice():
-            with self._option():
-                self._add_op_()
-            with self._option():
-                self._sub_op_()
-            with self._option():
-                self._div_op_()
-            with self._option():
-                self._exp_op_()
-            with self._option():
-                self._mul_op_()
-            with self._option():
-                self._mod_op_()
-            self._error('no available options')
-
-    @graken()
-    def _pop_stmt_(self):
+    def _pop_(self):
         self._token('O')
 
     @graken()
-    def _if_stmt_(self):
-        self._if_term_()
-        self._else_term_()
-
-    @graken()
-    def _if_term_(self):
-        self._token('?')
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._boolean_()
-                with self._option():
-                    self._equality_stmt_()
-                self._error('no available options')
-
-        def block1():
-            self._statement_()
-        self._positive_closure(block1)
-
-    @graken()
-    def _else_term_(self):
-        self._token('#')
-
-        def block0():
-            self._statement_()
-        self._positive_closure(block0)
-
-    @graken()
-    def _equality_stmt_(self):
+    def _value_(self):
         with self._choice():
             with self._option():
-                self._string_()
-                self._token('=')
-                self._string_()
+                self._number_()
             with self._option():
-                self._pop_stmt_()
-                self._token('=')
                 self._string_()
             with self._option():
-                self._input_stmt_()
-                self._token('=')
-                self._string_()
-            with self._option():
-                self._number_()
-                self._num_eq_term_()
-                self._number_()
-            with self._option():
-                self._pop_stmt_()
-                self._num_eq_term_()
-                self._number_()
-            with self._option():
-                self._input_stmt_()
-                self._num_eq_term_()
-                self._number_()
-            with self._option():
-                self._length_stmt_()
-                self._num_eq_term_()
-                self._number_()
-            with self._option():
-                self._array_()
-                self._token('=')
-                self._array_()
-            with self._option():
-                self._pop_stmt_()
-                self._token('=')
-                self._array_()
-            with self._option():
-                self._boolean_()
-                self._token('=')
                 self._boolean_()
             self._error('no available options')
-
-    @graken()
-    def _length_stmt_(self):
-        self._token('L')
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._array_()
-                with self._option():
-                    self._string_()
-                with self._option():
-                    self._input_stmt_()
-                self._error('no available options')
-
-    @graken()
-    def _num_eq_term_(self):
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._token('=')
-                with self._option():
-                    self._token('>')
-                with self._option():
-                    self._token('<')
-                self._error('expecting one of: < = >')
-
-    @graken()
-    def _add_op_(self):
-        self._number_()
-        self._token('+')
-        self._number_()
-
-    @graken()
-    def _sub_op_(self):
-        self._number_()
-        self._token('-')
-        self._number_()
-
-    @graken()
-    def _div_op_(self):
-        self._number_()
-        self._token('/')
-        self._number_()
-
-    @graken()
-    def _mul_op_(self):
-        self._number_()
-        self._token('*')
-        self._number_()
-
-    @graken()
-    def _mod_op_(self):
-        self._number_()
-        self._token('%')
-        self._number_()
-
-    @graken()
-    def _exp_op_(self):
-        self._number_()
-        self._token('^')
-        self._number_()
-
-    @graken()
-    def _array_(self):
-        self._token('[')
-
-        def block0():
-            self._array_term_()
-        self._positive_closure(block0)
-
-    @graken()
-    def _array_term_(self):
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._number_()
-                with self._option():
-                    self._string_()
-                self._error('no available options')
-        self._token(';')
 
     @graken()
     def _boolean_(self):
         with self._choice():
             with self._option():
-                self._true_()
+                self._token('T')
             with self._option():
-                self._false_()
-            self._error('no available options')
-
-    @graken()
-    def _true_(self):
-        self._token('T')
-
-    @graken()
-    def _false_(self):
-        self._token('F')
+                self._token('F')
+            self._error('expecting one of: F T')
 
     @graken()
     def _string_(self):
         self._token('"')
-        self._letter_with_space_()
+        self._letters_()
         self._token('"')
 
     @graken()
-    def _letter_with_space_(self):
-        self._pattern(r'[a-zA-Z ]+')
+    def _number_(self):
+        self._token('D')
+        self._digits_()
 
     @graken()
-    def _number_(self):
-        self._pattern(r'\d+')
+    def _digits_(self):
+        self._pattern(r'[0-9]+')
+
+    @graken()
+    def _letters_(self):
+        self._pattern(r'[a-zA-Z ]+')
 
 
 class ForestSemantics(object):
@@ -399,88 +185,46 @@ class ForestSemantics(object):
     def statement(self, ast):
         return ast
 
-    def iterate_stmt(self, ast):
+    def add(self, ast):
         return ast
 
-    def range_stmt(self, ast):
+    def sub(self, ast):
         return ast
 
-    def print_stmt(self, ast):
+    def mul(self, ast):
         return ast
 
-    def input_stmt(self, ast):
+    def div(self, ast):
         return ast
 
-    def push_stmt(self, ast):
+    def dup(self, ast):
         return ast
 
-    def push_term(self, ast):
+    def swap(self, ast):
         return ast
 
-    def numeric_stmt(self, ast):
+    def print(self, ast):
         return ast
 
-    def pop_stmt(self, ast):
+    def pop(self, ast):
         return ast
 
-    def if_stmt(self, ast):
-        return ast
-
-    def if_term(self, ast):
-        return ast
-
-    def else_term(self, ast):
-        return ast
-
-    def equality_stmt(self, ast):
-        return ast
-
-    def length_stmt(self, ast):
-        return ast
-
-    def num_eq_term(self, ast):
-        return ast
-
-    def add_op(self, ast):
-        return ast
-
-    def sub_op(self, ast):
-        return ast
-
-    def div_op(self, ast):
-        return ast
-
-    def mul_op(self, ast):
-        return ast
-
-    def mod_op(self, ast):
-        return ast
-
-    def exp_op(self, ast):
-        return ast
-
-    def array(self, ast):
-        return ast
-
-    def array_term(self, ast):
+    def value(self, ast):
         return ast
 
     def boolean(self, ast):
         return ast
 
-    def true(self, ast):
-        return ast
-
-    def false(self, ast):
-        return ast
-
     def string(self, ast):
         return ast
 
-    def letter_with_space(self, ast):
+    def number(self, ast):
         return ast
 
-    def number(self, ast):
+    def digits(self, ast):
+        return ast
+
+    def letters(self, ast):
         return ast
 
 

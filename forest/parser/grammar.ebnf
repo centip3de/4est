@@ -8,175 +8,87 @@ start
 
 statement
     =
-    | push_stmt
-    | numeric_stmt
-    | if_stmt
-    | print_stmt
-    | equality_stmt
-    | input_stmt
-    | length_stmt
-    | iterate_stmt
-    | range_stmt
+    | print
+    | pop
+    | value
+    | dup
+    | swap
+    | add
+    | sub
+    | mul
+    | div
     ;
 
-iterate_stmt
+add
     =
-    'I' (boolean | pop_stmt | equality_stmt | number | length_stmt | string | array | range_stmt) {statement}+ 'E'
+    '+'
     ;
 
-range_stmt
+sub
     =
-    'R' (number | length_stmt)
+    '-'
     ;
 
-print_stmt
+mul
     =
-    '.' (push_term | pop_stmt)
+    '*'
     ;
 
-input_stmt
+div
     =
-    ','
+    '/'
     ;
 
-push_stmt
+dup
     =
-    'P' push_term
+    'U'
     ;
 
-push_term
+swap
     =
-    | string
-    | number
-    | boolean
-    | array
-    | equality_stmt
-    | input_stmt
-    | numeric_stmt
-    | length_stmt
+    'S'
     ;
 
-numeric_stmt
+print
     =
-    | add_op
-    | sub_op
-    | div_op
-    | exp_op
-    | mul_op
-    | mod_op
+    '.'
     ;
 
-pop_stmt
+pop
     =
     'O'
     ;
 
-if_stmt
+value
     =
-    if_term
-    else_term
-    ;
-
-if_term
-    =
-    '?' (boolean | equality_stmt) {statement}+
-    ;
-
-else_term
-    =
-    '#' {statement}+
-    ;
-
-equality_stmt
-    =
-    | string '=' string
-    | pop_stmt '=' string
-    | input_stmt '=' string
-    | number num_eq_term number
-    | pop_stmt num_eq_term number
-    | input_stmt num_eq_term number
-    | length_stmt num_eq_term number
-    | array '=' array
-    | pop_stmt '=' array
-    | boolean '=' boolean
-    ;
-
-length_stmt
-    =
-    'L' ( array | string | input_stmt)
-    ;
-
-num_eq_term
-    =
-    ('=' | '>' | '<')
-    ;
-
-add_op
-    =
-    number '+' number
-    ;
-
-sub_op
-    =
-    number '-' number
-    ;
-
-div_op
-    =
-    number '/' number
-    ;
-
-mul_op
-    =
-    number '*' number
-    ;
-
-mod_op
-    =
-    number '%' number
-    ;
-
-exp_op
-    =
-    number '^' number
-    ;
-
-array
-    =
-    '[' {array_term}+
-    ;
-
-array_term
-    =
-    (number | string) ';'
+    | number
+    | string
+    | boolean
     ;
 
 boolean
     =
-    true | false
-    ;
-
-true
-    =
-    'T'
-    ;
-
-false
-    =
-    'F'
+    | 'T'
+    | 'F'
     ;
 
 string
     =
-    '"' letter_with_space '"'
+    '"' letters '"'
     ;
 
-letter_with_space
-    =
-    /[a-zA-Z ]+/
-    ;
 
 number
     =
-    /\d+/
+    'D' digits
+    ;
+
+digits
+    =
+    /[0-9]+/
+    ;
+
+letters
+    =
+    /[a-zA-Z ]+/
     ;
