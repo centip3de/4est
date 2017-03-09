@@ -124,6 +124,26 @@ class Interpreter():
         elif node[0] == '$':
             self.stack.remove_all_but_bot()
 
+        elif node[0] == '<':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(left < right)
+
+        elif node[0] == '>':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(left > right)
+
+        elif node[0] == '|':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(left or right)
+
+        elif node[0] == '&':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(left and right)
+
         else:
             raise Exception("Not a parsable node: " + node)
 

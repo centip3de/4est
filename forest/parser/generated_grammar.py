@@ -122,7 +122,31 @@ class ForestParser(Parser):
                 self._negate_()
             with self._option():
                 self._bot_()
+            with self._option():
+                self._lt_()
+            with self._option():
+                self._gt_()
+            with self._option():
+                self._or_()
+            with self._option():
+                self._and_()
             self._error('no available options')
+
+    @graken()
+    def _and_(self):
+        self._token('&')
+
+    @graken()
+    def _or_(self):
+        self._token('|')
+
+    @graken()
+    def _lt_(self):
+        self._token('<')
+
+    @graken()
+    def _gt_(self):
+        self._token('>')
 
     @graken()
     def _bot_(self):
@@ -144,7 +168,7 @@ class ForestParser(Parser):
             self._statement_()
         self._positive_closure(block0)
         self._else_()
-        self._token('|')
+        self._token(';')
 
     @graken()
     def _else_(self):
@@ -261,6 +285,18 @@ class ForestSemantics(object):
         return ast
 
     def statement(self, ast):
+        return ast
+
+    def and_(self, ast):
+        return ast
+
+    def or_(self, ast):
+        return ast
+
+    def lt(self, ast):
+        return ast
+
+    def gt(self, ast):
         return ast
 
     def bot(self, ast):

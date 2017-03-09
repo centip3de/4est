@@ -26,6 +26,30 @@ statement
     | clear
     | negate
     | bot
+    | lt
+    | gt
+    | or
+    | and
+    ;
+
+and
+    =
+    '&'
+    ;
+
+or
+    =
+    '|'
+    ;
+
+lt
+    =
+    '<'
+    ;
+
+gt
+    =
+    '>'
     ;
 
 bot
@@ -45,7 +69,7 @@ input
 
 if
     =
-    '?' {statement}+ else '|'
+    '?' {statement}+ else ';'
     ;
 
 else
