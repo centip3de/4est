@@ -14,6 +14,10 @@ class Interpreter():
         self.stack = Stack()
         self.debug = debug
 
+    def interpret(self, ast):
+        for op in ast:
+            self.step(op)
+
     def step(self, node):
         if self.debug:
             self.stack.print_stack()
@@ -150,28 +154,34 @@ class Interpreter():
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description="Simple code golfing lang.")
     arg_parser.add_argument('--debug', action="store_true", help="enables debug mode")
+    arg_parser.add_argument('file', nargs="?", help="4est file to execute")
     args = arg_parser.parse_args()
 
     parser = ForestParser()
     interp = Interpreter(args.debug)
 
-    while True:
-        ui = input("> ")
-        if ui == "quit" or ui == "exit":
-            break
-        else:
-            try:
-                ast = parser.parse(Buffer(ui, nameguard=False), rule_name='start')
+    # If a file hasn't been passed in, then assume this is a REPL session
+    if not args.file:
+        while True:
+            ui = input("> ")
+            if ui == "quit" or ui == "exit":
+                break
+            else:
+                try:
+                    ast = parser.parse(Buffer(ui, nameguard=False), rule_name='start')
 
-                if args.debug:
-                    print("AST:", ast)
+                    if args.debug:
+                        print("AST:", ast)
 
-                for op in ast:
-                    interp.step(op)
+                    interp.interpret(ast)
 
-                if args.debug:
-                    interp.stack.print_stack()
+                    if args.debug:
+                        interp.stack.print_stack()
 
-            except Exception as e:
-                print("ERROR: " + str(e))
-                traceback.print_exc()
+                except Exception as e:
+                    print("ERROR: " + str(e))
+                    traceback.print_exc()
+    else:
+        f = open(args.file)
+        ast = parser.parse(f.read(), rule_name='start')
+        interp.interpret(ast)
