@@ -3,7 +3,8 @@
 4est (or Forest) is a stack based language written in Python with code golfing in mind. Examples can be found in the examples folder.
 
 ## Overview
-* 4est is a stack based language where all OPs are a single character in order to facilitate code golfing. * 4est uses implict pushing to the stack, where all literals (Integers, Strings, Booleans, etc.) are pushed onto the stack immediately when they're "declared".
+* 4est is a stack based language where all OPs are a single character in order to facilitate code golfing.
+* 4est uses implict pushing to the stack, where all literals (Integers, Strings, Booleans, etc.) are pushed onto the stack immediately when they're "declared".
 * Likewise, the results of computations or operations are also pushed onto the stack.
 * The entire language save for blocks (e.g. iteration blocks, if blocks, etc.) is written in reverse polish notation.
 * There are no variables in 4est.
@@ -11,7 +12,7 @@
 ## OPs:
 
 |OP|Description|
---|---------------
+|--|---------------
 |`.`| Prints the top of the stack to stdout (does not pop the top element of the stack)
 |`,`| Get user input and push it to the top of the stack. Numbers are automatically converted to integers.
 |`D<int>`| Push a number down on the stack.
