@@ -11,34 +11,34 @@
 
 ## OPs:
 
-|OP|Description|
-|--|---------------
-|`.`| Prints the top of the stack to stdout (does not pop the top element of the stack)
-|`,`| Get user input and push it to the top of the stack. Numbers are automatically converted to integers.
-|`D<int>`| Push a number down on the stack.
-|`"<str>"`| Push a string down on the stack
-|`U`| Duplicate the top element of the stack, e.g. `[a]` -> `[a, a]`
-|`S`| Swap the two top elements of the stack, e.g. `[a, b]` -> `[b, a]`
-|`C`| Clear out the stack, e.g. `[a, b, c]` -> `[]`
-|`$`| Clear all but the bottom element of the stack, e.g. `[a, b, c]` -> `[a]`
-|`+`| Pop off the top two elements of the stack, add them together, then push the result back on the stack
-|`-`| Pop off the top two elements of the stack, subtract them, then push the result back on the stack
-|`*`| Pop off the top two elements of the stack, multiply them, then push the result back on the stack
-|`/`| Pop off the top two elements of the stack, divide them, then push the result back on the stack
-|`^`| Pop off the top two elements of the stack, perform the exponentiation, then push the result back on the stack
-|`%`| Pop off the top two elements of the stack, perform modulo, then push the result back on the stack
-|`=`| Pop off the top two elements of the stack, compare them, then push the result back on the stack
-|`!`| Pop off the top element of the stack, negate it, then push the result back on the stack
-|`O`| Pop off the top element of the stack
-|`?`| Pop off the top element of the stack, if it's true, execute the inner block. If it's false, execute the else block.
-|`#`| If the previous if-statement resulted in a false, execute this inner block.
-|`;`| End-if, required at the end of every if-statement (a correct if-statement looks like: `?<statements>#<statements>;`)
-|`I`| Iteration block, peeks at the top element of the stack, if it's true, execute the inner block. Repeat while the top of the stack is true (note -- the top of the stack only has to be true/false when the loop condition is being evaluated again). If it's false, skip the inner block.
-|`E`| End iteration token, required at the end of every iteration block (a correct iteration statement looks like: `I<statements>E`)
-|`T`| Pushes boolean `True` value onto the stack
-|`F`| Pushes boolean `False` value onto the stack
-|`|`| Pops off the top two elements of the stack, performs a logical or on them, then pushes the result back on the stack
-|`&`| Pops off the top two elements of the stack, performs a logical and on them, then pushes the result back on the stack
+| OP | Description |
+| --- | ---------------
+| `.` | Prints the top of the stack to stdout (does not pop the top element of the stack)
+| `,`| Get user input and push it to the top of the stack. Numbers are automatically converted to integers.
+| `D<int>` | Push a number down on the stack.
+| `"<str>"` | Push a string down on the stack
+| `U` | Duplicate the top element of the stack, e.g. `[a]` -> `[a, a]`
+| `S` | Swap the two top elements of the stack, e.g. `[a, b]` -> `[b, a]`
+| `C` | Clear out the stack, e.g. `[a, b, c]` -> `[]`
+| `$` | Clear all but the bottom element of the stack, e.g. `[a, b, c]` -> `[a]`
+| `+` | Pop off the top two elements of the stack, add them together, then push the result back on the stack
+| `-` | Pop off the top two elements of the stack, subtract them, then push the result back on the stack
+| `*` | Pop off the top two elements of the stack, multiply them, then push the result back on the stack
+| `/` | Pop off the top two elements of the stack, divide them, then push the result back on the stack
+| `^` | Pop off the top two elements of the stack, perform the exponentiation, then push the result back on the stack
+| `%` | Pop off the top two elements of the stack, perform modulo, then push the result back on the stack
+| `=` | Pop off the top two elements of the stack, compare them, then push the result back on the stack
+| `!` | Pop off the top element of the stack, negate it, then push the result back on the stack
+| `O` | Pop off the top element of the stack
+| `?` | Pop off the top element of the stack, if it's true, execute the inner block. If it's false, execute the else block.
+| `#` | If the previous if-statement resulted in a false, execute this inner block.
+| `;` | End-if, required at the end of every if-statement (a correct if-statement looks like: `?<statements>#<statements>;`)
+| `I` | Iteration block, peeks at the top element of the stack, if it's true, execute the inner block. Repeat while the top of the stack is true (note -- the top of the stack only has to be true/false when the loop condition is being evaluated again). If it's false, skip the inner block.
+| `E` | End iteration token, required at the end of every iteration block (a correct iteration statement looks like: `I<statements>E`)
+| `T` | Pushes boolean `True` value onto the stack
+| `F` | Pushes boolean `False` value onto the stack
+| `|` | Pops off the top two elements of the stack, performs a logical or on them, then pushes the result back on the stack
+| `&` | Pops off the top two elements of the stack, performs a logical and on them, then pushes the result back on the stack
 
 ## Example:
 
