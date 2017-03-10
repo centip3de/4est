@@ -12,7 +12,7 @@
 ## OPs:
 
 | OP | Description |
-| --- | ---------------
+| ----- | ---------------
 | `.` | Prints the top of the stack to stdout (does not pop the top element of the stack)
 | `,`| Get user input and push it to the top of the stack. Numbers are automatically converted to integers.
 | `D<int>` | Push a number down on the stack.
