@@ -3,11 +3,11 @@ export
 
 repl:
 	@echo "--- opening repl"
-	@python3 forest/interp/interp.py
+	@python3 forest/forest.py
 
 repl-debug:
 	@echo "--- opening repl in debug mode"
-	@python3 forest/interp/interp.py --debug
+	@python3 forest/forest.py --debug
 
 test:
 	@echo "--- running tests"
