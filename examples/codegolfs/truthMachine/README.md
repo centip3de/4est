@@ -1,6 +1,7 @@
 Truth Machine
 ===========
-Link to post: https://codegolf.stackexchange.com/questions/62732/implement-a-truth-machine
+The Truth Machine challenge is to write a program that takes in user input, and on a 0 exits, and on a 1 prints the number `1` forever (until it runs out of memory or is terminated).
+Here's a link to post for a full explaination and to see other entries: https://codegolf.stackexchange.com/questions/62732/implement-a-truth-machine
 
 Solution and explaination
 --------------------------
