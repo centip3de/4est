@@ -3,7 +3,10 @@ from forest.interp import Interpreter
 from forest.parser.generated_grammar import ForestParser
 from grako.buffering import Buffer
 
+
 class REPL():
+
+
     def __init__(self, debug):
         self.debug = debug
         self.stack = Stack()
@@ -29,5 +32,5 @@ class REPL():
 
                 except Exception as e:
                     print("ERROR: " + str(e))
-                    traceback.print_exc()
+                    e.traceback.print_exc()
 

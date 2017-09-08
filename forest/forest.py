@@ -1,19 +1,13 @@
-import os.path
-import sys
-import traceback
 import argparse
+import sys
+import os
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-
-# Super hacky way to get around Python's shitty import system
-for ele in sys.path:
-    if '4est/forest' in ele:
-        sys.path.remove(ele)
+# Python is dumb and this is a way to get around their dumbness
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
 from forest.parser.generated_grammar import ForestParser
-from forest.stack import Stack
-from forest.interp.repl import REPL
 from forest.interp import Interpreter
+from forest.interp.repl import REPL
 
 def main():
     arg_parser = argparse.ArgumentParser(description="Simple code golfing lang.")
@@ -31,6 +25,7 @@ def main():
         f = open(args.file)
         ast = parser.parse(f.read(), rule_name='start')
         Interpreter(args.debug).interpret(ast)
+
 
 if __name__ == "__main__":
     main()
