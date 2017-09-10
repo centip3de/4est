@@ -6,14 +6,46 @@ class Interpreter():
         self.debug = debug
 
     def interpret(self, ast):
+        print(ast)
         for op in ast:
             self.step(op)
 
     def step(self, node):
         if self.debug:
+            print("Current node: " + node[0])
+            print(node)
             self.stack.print_stack()
 
-        if node[0] == 'D':
+        if node[0] == ']':
+            self.stack.push([])
+
+        elif node[0] == 'P':
+            left = self.stack.pop()
+            right = self.stack.pop()
+            self.stack.push(left.split(right))
+
+        elif node[0] == 'J':
+            left = self.stack.pop()
+
+            if type(left) == list:
+                self.stack.push("".join([str(x) for x in left]))
+
+            else:
+                right = self.stack.pop()
+                if type(right) == list:
+                    self.stack.push(str(left).join(right))
+
+                else:
+                    raise Exception("Non compatible types for join were used.")
+
+        elif node[0] == 'L':
+            stackList = []
+            for i in range(len(self.stack.mem)):
+                stackList.append(self.stack.pop())
+
+            self.stack.push(stackList[::-1])
+
+        elif node[0] == 'D':
             self.stack.push(int(node[1]))
 
         elif node[0] == '"':

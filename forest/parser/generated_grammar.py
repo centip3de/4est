@@ -130,7 +130,31 @@ class ForestParser(Parser):
                 self._or_()
             with self._option():
                 self._and_()
+            with self._option():
+                self._list_()
+            with self._option():
+                self._list_from_stack_()
+            with self._option():
+                self._join_()
+            with self._option():
+                self._split_()
             self._error('no available options')
+
+    @graken()
+    def _split_(self):
+        self._token('P')
+
+    @graken()
+    def _join_(self):
+        self._token('J')
+
+    @graken()
+    def _list_from_stack_(self):
+        self._token('L')
+
+    @graken()
+    def _list_(self):
+        self._token(']')
 
     @graken()
     def _and_(self):
@@ -263,7 +287,13 @@ class ForestParser(Parser):
     @graken()
     def _string_(self):
         self._token('"')
-        self._letters_()
+        with self._group():
+            with self._choice():
+                with self._option():
+                    self._letters_()
+                with self._option():
+                    self._digits_()
+                self._error('no available options')
         self._token('"')
 
     @graken()
@@ -285,6 +315,18 @@ class ForestSemantics(object):
         return ast
 
     def statement(self, ast):
+        return ast
+
+    def split(self, ast):
+        return ast
+
+    def join(self, ast):
+        return ast
+
+    def list_from_stack(self, ast):
+        return ast
+
+    def list(self, ast):
         return ast
 
     def and_(self, ast):

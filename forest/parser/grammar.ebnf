@@ -30,6 +30,30 @@ statement
     | gt
     | or
     | and
+    | list
+    | list_from_stack
+    | join
+    | split
+    ;
+
+split
+    =
+    'P'
+    ;
+
+join
+    =
+    'J'
+    ;
+
+list_from_stack
+    =
+    'L'
+    ;
+
+list
+    =
+    ']'
     ;
 
 and
@@ -158,7 +182,7 @@ boolean
 
 string
     =
-    '"' letters '"'
+    '"' (letters|digits) '"'
     ;
 
 
