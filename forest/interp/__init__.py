@@ -19,6 +19,14 @@ class Interpreter():
         if node[0] == ']':
             self.stack.push([])
 
+        elif node[0] == 'd':
+            left = self.stack.pop()
+            self.stack.push(left - 1)
+
+        elif node[0] == 'i':
+            left = self.stack.pop()
+            self.stack.push(left + 1)
+
         elif node[0] == 'P':
             left = self.stack.pop()
             right = self.stack.pop()

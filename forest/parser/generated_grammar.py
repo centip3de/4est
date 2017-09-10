@@ -138,7 +138,19 @@ class ForestParser(Parser):
                 self._join_()
             with self._option():
                 self._split_()
+            with self._option():
+                self._dec_()
+            with self._option():
+                self._inc_()
             self._error('no available options')
+
+    @graken()
+    def _dec_(self):
+        self._token('d')
+
+    @graken()
+    def _inc_(self):
+        self._token('i')
 
     @graken()
     def _split_(self):
@@ -315,6 +327,12 @@ class ForestSemantics(object):
         return ast
 
     def statement(self, ast):
+        return ast
+
+    def dec(self, ast):
+        return ast
+
+    def inc(self, ast):
         return ast
 
     def split(self, ast):

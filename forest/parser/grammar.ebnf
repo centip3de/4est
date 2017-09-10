@@ -34,6 +34,17 @@ statement
     | list_from_stack
     | join
     | split
+    | dec
+    | inc
+    ;
+
+dec
+    =
+    'd'
+    ;
+
+inc =
+    'i'
     ;
 
 split
