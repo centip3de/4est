@@ -18,14 +18,28 @@ And below is the explained version:
 ```
 D3 // Push 3 to the stack.
 D5 // Push 5 to the stack.
-+  // Pop off two values on the stack, add them together, and push the result back on the stack, giving us 8.
+
++  // Pop off two values on the stack, add them together, and
+   //   push the result back on the stack, giving us 8.
+
 U  // Dup the top element of the stack, giving us [8, 8].
-*  // Pop off two values on the stack, multiply them together, and push the result back on the stack, giving us 64.
+
+*  // Pop off two values on the stack, multiply them together,
+   //   and push the result back on the stack, giving us 64.
+
 D3 // Push 3 on the stack.
 D5 // Push 5 on the stack.
--  // Pop off two values on the stack, subtract them, and push the result back on the stack, giving us 2.
-^  // Pop off two values on the stack, perform exponentiation (in this case 2^64), and push the result back on the stack, giving us 18446744073709551616.
-d  // Pop off the top value on the stack, decrement it, and push the result back on the stack, giving us 18446744073709551615.
+
+-  // Pop off two values on the stack, subtract them, and push
+   //   the result back on the stack, giving us 2.
+
+^  // Pop off two values on the stack, perform exponentiation
+   //   (in this case 2^64), and push the result back on the stack,
+   //   giving us 18446744073709551616.
+
+d  // Pop off the top value on the stack, decrement it, and push the
+   //   result back on the stack, giving us 18446744073709551615.
+
 .  // Print the top of the stack
 ```
 
