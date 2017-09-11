@@ -1,3 +1,4 @@
+from forest.interp.operators import *
 from forest.stack import Stack
 
 class Interpreter():
@@ -6,7 +7,6 @@ class Interpreter():
         self.debug = debug
 
     def interpret(self, ast):
-        print(ast)
         for op in ast:
             self.step(op)
 
@@ -17,107 +17,114 @@ class Interpreter():
             self.stack.print_stack()
 
         if node[0] == ']':
-            self.stack.push([])
+            self.stack.push(EmptyListOP.invoke())
 
         elif node[0] == 'd':
             left = self.stack.pop()
-            self.stack.push(left - 1)
+            res, self.stack = DecOP.invoke(left, None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == 'i':
             left = self.stack.pop()
-            self.stack.push(left + 1)
+            res, self.stack = IncOP.invoke(left, None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == 'P':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left.split(right))
+            res, self.stack = SplitOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == 'J':
             left = self.stack.pop()
-
             if type(left) == list:
-                self.stack.push("".join([str(x) for x in left]))
-
+                res, self.stack = JoinOP.invoke(left, None, self.stack)
+                self.stack.push(res)
             else:
                 right = self.stack.pop()
-                if type(right) == list:
-                    self.stack.push(str(left).join(right))
-
-                else:
-                    raise Exception("Non compatible types for join were used.")
+                res, self.stack = JoinOP.invoke(left, right, self.stack)
+                self.stack.push(res)
 
         elif node[0] == 'L':
-            stackList = []
-            for i in range(len(self.stack.mem)):
-                stackList.append(self.stack.pop())
-
-            self.stack.push(stackList[::-1])
+            res, self.stack = StackToListOP.invoke(self.stack, None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == 'D':
-            self.stack.push(int(node[1]))
+            res, self.stack = IntOP.invoke(node[1], None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '"':
-            self.stack.push(node[1])
+            res, self.stack = StringOP.invoke(node[1], None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == 'T':
-            self.stack.push(True)
+            res, self.stack = TruthOP.invoke(None, None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == 'F':
-            self.stack.push(False)
+            res, self.stack = FalseOP.invoke(None, None, self.stack)
+            self.stack.push()
 
         elif node[0] == 'O':
-            self.stack.pop()
+            res, self.stack = PopOP.invoke(None, None, self.stack)
 
         elif node[0] == '.':
-            print(str(self.stack.peek()))
+            res, self.stack = PrintOP.invoke(None, None, self.stack)
 
         elif node[0] == 'U':
-            self.stack.push(self.stack.peek())
+            DupOP.invoke(None, None, self.stack)
 
         elif node[0] == 'S':
-            top = self.stack.pop()
-            bot = self.stack.pop()
-            self.stack.push(top)
-            self.stack.push(bot)
+            left = self.stack.pop()
+            right = self.stack.pop()
+            res, self.stack = SwapOP.invoke(left, right, self.stack)
 
         elif node[0] == '+':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left + right)
+            res, self.stack = AddOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '-':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left - right)
+            res, self.stack = SubOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '*':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left * right)
+            res, self.stack = MulOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '/':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left / right)
+            res, self.stack = DivOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '%':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left % right)
+            res, self.stack = ModOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '^':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(pow(left, right))
+            res, self.stack = ExpOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '=':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left == right)
+            res, self.stack = EqOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '!':
-            val = self.stack.pop()
-            self.stack.push(not val)
+            left = self.stack.pop()
+            res, self.stack = NotOP.invoke(left, None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '?':
             if self.stack.peek():
@@ -147,39 +154,38 @@ class Interpreter():
             return
 
         elif node[0] == ',':
-            user_input = input("")
-            if user_input.isnumeric():
-                user_input = int(user_input)
-
-            self.stack.push(user_input)
+            res, self.stack = InputOP.invoke(None, None, self.stack)
+            self.stack.push(res)
 
         elif node[0] == 'C':
-            self.stack.clear_stack()
+            res, self.stack = ClearStackOP.invoke(None, None, self.stack)
 
         elif node[0] == '$':
-            self.stack.remove_all_but_bot()
+            res, self.stack = AllButButOP.invoke(None, None, self.stack)
 
         elif node[0] == '<':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left < right)
+            res, self.stack = LtOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '>':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left > right)
+            res, self.stack = GtOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '|':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left or right)
+            res, self.stack = OrOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         elif node[0] == '&':
             left = self.stack.pop()
             right = self.stack.pop()
-            self.stack.push(left and right)
+            res, self.stack = AndOP.invoke(left, right, self.stack)
+            self.stack.push(res)
 
         else:
             raise Exception("Not a parsable node: " + node)
-
-
