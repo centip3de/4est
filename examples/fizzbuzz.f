@@ -1,1 +1,1 @@
-,UD0=!IOUD3S%D0=?OUD5S%D0=?O"FizzBuzz"#"Fizz";#OUD5S%D0=?O"Buzz"#O;;.$D1S-UD0=!E
+,U0=!IOU3S%0=?OU5S%0=?O"FizzBuzz"#"Fizz";#OU5S%0=?O"Buzz"#O;;.$1S-U0=!E

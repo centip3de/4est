@@ -36,6 +36,7 @@ statement
     | split
     | dec
     | inc
+    | nop
     ;
 
 dec
@@ -178,6 +179,10 @@ pop
     'O'
     ;
 
+nop =
+    whitespace
+    ;
+
 value
     =
     | number
@@ -199,7 +204,7 @@ string
 
 number
     =
-    'D' digits
+    digits
     ;
 
 digits
@@ -210,4 +215,9 @@ digits
 letters
     =
     /[a-zA-Z ]+/
+    ;
+
+whitespace
+    =
+    /\w+/
     ;

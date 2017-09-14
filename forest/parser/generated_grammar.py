@@ -142,6 +142,8 @@ class ForestParser(Parser):
                 self._dec_()
             with self._option():
                 self._inc_()
+            with self._option():
+                self._nop_()
             self._error('no available options')
 
     @graken()
@@ -277,6 +279,10 @@ class ForestParser(Parser):
         self._token('O')
 
     @graken()
+    def _nop_(self):
+        self._whitespace_()
+
+    @graken()
     def _value_(self):
         with self._choice():
             with self._option():
@@ -310,7 +316,6 @@ class ForestParser(Parser):
 
     @graken()
     def _number_(self):
-        self._token('D')
         self._digits_()
 
     @graken()
@@ -320,6 +325,10 @@ class ForestParser(Parser):
     @graken()
     def _letters_(self):
         self._pattern(r'[a-zA-Z ]+')
+
+    @graken()
+    def _whitespace_(self):
+        self._pattern(r'\w+')
 
 
 class ForestSemantics(object):
@@ -413,6 +422,9 @@ class ForestSemantics(object):
     def pop(self, ast):
         return ast
 
+    def nop(self, ast):
+        return ast
+
     def value(self, ast):
         return ast
 
@@ -429,6 +441,9 @@ class ForestSemantics(object):
         return ast
 
     def letters(self, ast):
+        return ast
+
+    def whitespace(self, ast):
         return ast
 
 

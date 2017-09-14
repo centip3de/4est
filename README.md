@@ -15,7 +15,7 @@
 | ----- | ---------------
 | `.` | Prints the top of the stack to stdout (does not pop the top element of the stack)
 | `,`| Get user input and push it to the top of the stack. Numbers are automatically converted to integers.
-| `D<int>` | Push a number down on the stack.
+| `<int>` | Push a number down on the stack.
 | `"<str>"` | Push a string down on the stack
 | `U` | Duplicate the top element of the stack, e.g. `[a]` -> `[a, a]`
 | `S` | Swap the two top elements of the stack, e.g. `[a, b]` -> `[b, a]`
@@ -49,24 +49,24 @@ Below is a fully documented example of FizzBuzz, along with a minified version:
 ```
  , // Get input
  U // Dup input
- D0 // Push down 0
+ 0 // Push down 0
  = // Compare the input to 0
  ! // Negate the comparison
  I // Iterate until the stack is 0
      O // Pop off that equality
      U // Duplicate the top of the stack so we don't clober shit
-     D3 // Push down 3 for comparison
+     3 // Push down 3 for comparison
      S // Swap the top two for accurate modulo
      % // Check if the number is divisible by 3, push result on stack
-     D0 // Push down 0 for comparison
+     0 // Push down 0 for comparison
      = // Pop off the previous 2 and push on equality result
      ? // If the top of the stack is True
          O // Pop off the equality result
          U // Dup the top of the stack so we don't clober
-         D5 // Push down 5 for comparison
+         5 // Push down 5 for comparison
          % // Modulo the last two numbers (check if divisible by 5)
          S // Swap the top two for accurate modulo
-         D0 // Push down 0 for comparison
+         0 // Push down 0 for comparison
          = // Perform equality
          ? // If this is also divisible by 5 push "Fizzbuzz"
              O // Pop off the equality result
@@ -79,10 +79,10 @@ Below is a fully documented example of FizzBuzz, along with a minified version:
      # // If this isn't divisible by 3
          O // Pop off the equality result
          U // Dup the top of the stack so we don't clober
-         D5 // Push down 5 for comparison
+         5 // Push down 5 for comparison
          S // Swap the top two for accurate modulo
          % // Modulo the last two numbers (check if divisible by 5)
-         D0 // Push down 0 for comparison
+         0 // Push down 0 for comparison
          = // Perform equality
          ? // If this is divisible by 5 push "Buzz"
              O // Pop off the equality result
@@ -96,11 +96,11 @@ Below is a fully documented example of FizzBuzz, along with a minified version:
      . // Print the output
      $ // Remove all but the bottom of the stack
        // (to clear off everything except the "root" number)
-     D1 // Add 1 to subract
+     1 // Add 1 to subract
      S // Swap so we don't get a negative
      - // Perform the subraction
      U // Dup the result
-     D0 // Push down 0
+     0 // Push down 0
      = // See if the current amount is equal to 0
      ! // Negate the comparison
  E // End loop
@@ -109,5 +109,5 @@ Below is a fully documented example of FizzBuzz, along with a minified version:
 
 Minified version:
  ```
-,UD0=!IOUD3S%D0=?OUD5S%D0=?O"FizzBuzz"#"Fizz";#OUD5S%D0=?O"Buzz"#O;;.$D1S-UD0=!E
+,U0=!IOU3S%0=?OU5S%0=?O"FizzBuzz"#"Fizz";#OU5S%0=?O"Buzz"#O;;.$1S-U0=!E
 ```

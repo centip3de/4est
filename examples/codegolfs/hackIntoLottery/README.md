@@ -7,17 +7,20 @@ Link to challenge: https://codegolf.stackexchange.com/questions/110748/hack-into
 
 Explaination
 -------------
-Below is the best solution I could come up with, which is 16 bytes total, along with an explaination of the code.
+Below is the best solution I could come up with, which is 13 bytes total, along with an explaination of the code.
 
 Here's the minified code:
 ```
-D3D5+U*D3D5-^d.
+3 5+U*3 5-^d.
 ```
 
 And below is the explained version:
 ```
-D3 // Push 3 to the stack.
-D5 // Push 5 to the stack.
+3 // Push 3 to the stack.
+
+  // NOP for delineation
+
+5 // Push 5 to the stack.
 
 +  // Pop off two values on the stack, add them together, and
    //   push the result back on the stack, giving us 8.
@@ -27,8 +30,11 @@ U  // Dup the top element of the stack, giving us [8, 8].
 *  // Pop off two values on the stack, multiply them together,
    //   and push the result back on the stack, giving us 64.
 
-D3 // Push 3 on the stack.
-D5 // Push 5 on the stack.
+3 // Push 3 on the stack.
+
+  // NOP for deliniation
+
+5 // Push 5 on the stack.
 
 -  // Pop off two values on the stack, subtract them, and push
    //   the result back on the stack, giving us 2.

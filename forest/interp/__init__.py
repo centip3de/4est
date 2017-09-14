@@ -49,8 +49,8 @@ class Interpreter():
             res, self.stack = StackToListOP.invoke(self.stack, None, self.stack)
             self.stack.push(res)
 
-        elif node[0] == 'D':
-            res, self.stack = IntOP.invoke(node[1], None, self.stack)
+        elif node[0].isnumeric():
+            res, self.stack = IntOP.invoke(node[0], None, self.stack)
             self.stack.push(res)
 
         elif node[0] == '"':
