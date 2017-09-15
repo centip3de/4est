@@ -1,7 +1,7 @@
 
 class Stack():
-    def __init__(self):
-        self.mem = []
+    def __init__(self, mem=[]):
+        self.mem = mem
 
     def push(self, data):
         self.mem.append(data)

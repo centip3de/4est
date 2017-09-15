@@ -1,4 +1,5 @@
 import abc
+from forest.stack import Stack
 
 class Operator:
     __metaclass__ = abc.ABCMeta
@@ -53,7 +54,7 @@ class JoinOP(Operator):
         if type(left) == list:
             return ("".join([str(x) for x in left]), stack)
         else:
-            return (str(left).join(right), stack)
+            return (str(left).join([str(x) for x in right]), stack)
 
 class SplitOP(Operator):
     @classmethod
@@ -132,12 +133,12 @@ class SwapOP(Operator):
 class StackToListOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
-        return (None, [stack])
+        return (stack.mem, stack)
 
 class ClearStackOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
-        return (None, [])
+        return (None, Stack([]))
 
 class PopOP(Operator):
     @classmethod

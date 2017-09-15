@@ -1,6 +1,8 @@
 PYTHONPATH := ${PWD}:${PYTHONPATH}
 export
 
+.PHONY: test clean
+
 repl:
 	@echo "--- opening repl"
 	@python3 forest/forest.py
@@ -11,7 +13,7 @@ repl-debug:
 
 test:
 	@echo "--- running tests"
-	@echo "We should probably run tests here..."
+	pytest
 
 clean:
 	@echo "--- cleaning"
