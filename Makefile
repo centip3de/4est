@@ -19,3 +19,4 @@ clean:
 	@echo "--- cleaning"
 	@find "." -type f -name "*.pyc" -delete
 	@find "." -type d -name "__pycache__" -delete
+	@find "." -type d -name "./cache" -delete
