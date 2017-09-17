@@ -19,6 +19,9 @@ class Interpreter():
         if node[0] == ']':
             self.stack.push(EmptyListOP.invoke())
 
+        elif node[0] == 'l':
+            res, self.stack = ListToStackOP.invoke(None, None, self.stack)
+
         elif node[0] == 'd':
             left = self.stack.pop()
             res, self.stack = DecOP.invoke(left, None, self.stack)
@@ -54,7 +57,10 @@ class Interpreter():
             self.stack.push(res)
 
         elif node[0] == '"':
-            res, self.stack = StringOP.invoke(node[1], None, self.stack)
+            string = node[1]
+            if(node[1] == '"'):
+                string = ""
+            res, self.stack = StringOP.invoke(string, None, self.stack)
             self.stack.push(res)
 
         elif node[0] == 'T':

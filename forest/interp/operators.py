@@ -8,6 +8,11 @@ class Operator:
     def invoke(cls, left, right, stack):
         return (None, None)
 
+class ListToStackOP(Operator):
+    @classmethod
+    def invoke(cls, left, right, stack):
+        return (None, Stack(stack.pop()))
+
 class AndOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
@@ -59,6 +64,8 @@ class JoinOP(Operator):
 class SplitOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
+        if(right == ""):
+            return (list(left), stack)
         return (left.split(right), stack)
 
 class EmptyListOP(Operator):
@@ -126,8 +133,8 @@ class OrOP(Operator):
 class SwapOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
-        stack.push(right)
         stack.push(left)
+        stack.push(right)
         return (None, stack)
 
 class StackToListOP(Operator):

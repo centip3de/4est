@@ -144,7 +144,13 @@ class ForestParser(Parser):
                 self._inc_()
             with self._option():
                 self._nop_()
+            with self._option():
+                self._list_to_stack_()
             self._error('no available options')
+
+    @graken()
+    def _list_to_stack_(self):
+        self._token('l')
 
     @graken()
     def _dec_(self):
@@ -304,15 +310,20 @@ class ForestParser(Parser):
 
     @graken()
     def _string_(self):
-        self._token('"')
-        with self._group():
-            with self._choice():
-                with self._option():
-                    self._letters_()
-                with self._option():
-                    self._digits_()
-                self._error('no available options')
-        self._token('"')
+        with self._choice():
+            with self._option():
+                self._token('"')
+                with self._group():
+                    with self._choice():
+                        with self._option():
+                            self._letters_()
+                        with self._option():
+                            self._digits_()
+                        self._error('no available options')
+                self._token('"')
+            with self._option():
+                self._token('""')
+            self._error('expecting one of: ""')
 
     @graken()
     def _number_(self):
@@ -336,6 +347,9 @@ class ForestSemantics(object):
         return ast
 
     def statement(self, ast):
+        return ast
+
+    def list_to_stack(self, ast):
         return ast
 
     def dec(self, ast):

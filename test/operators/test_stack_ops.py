@@ -1,15 +1,17 @@
 import unittest
 from forest.stack import Stack
-from forest.interp.operators import SwapOP, ClearStackOP, PopOP, DupOP
+from forest.interp.operators import SwapOP, ClearStackOP, PopOP, DupOP, ListToStackOP
 
 class StackOperatorTest(unittest.TestCase):
     def setUp(self):
         self.stack = Stack([1, 2])
 
     def test_swap_op(self):
-        out = SwapOP.invoke(None, None, self.stack)
-        out[0] == None
-        out[1].mem == [2, 1]
+        left = self.stack.pop()
+        right = self.stack.pop()
+        out = SwapOP.invoke(left, right, self.stack)
+        assert(out[0] == None)
+        assert(out[1].mem == [2, 1])
 
     def test_clear_stack_op(self):
         out = ClearStackOP.invoke(None, None, self.stack)
@@ -25,3 +27,12 @@ class StackOperatorTest(unittest.TestCase):
         out = DupOP.invoke(None, None, self.stack)
         assert(out[0] == None)
         assert(out[1].mem == [1, 2, 2])
+
+    def test_list_to_stack_op(self):
+        self.stack = Stack([[1, 2, 3]])
+        out = ListToStackOP.invoke(None, None, self.stack)
+        assert(out[0] == None)
+        assert(len(out[1].mem) == 3)
+        assert(out[1].mem[0] == 1)
+        assert(out[1].mem[1] == 2)
+        assert(out[1].mem[2] == 3)

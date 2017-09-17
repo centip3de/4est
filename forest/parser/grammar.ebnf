@@ -37,6 +37,11 @@ statement
     | dec
     | inc
     | nop
+    | list_to_stack
+    ;
+
+list_to_stack =
+    'l'
     ;
 
 dec
@@ -199,6 +204,7 @@ boolean
 string
     =
     '"' (letters|digits) '"'
+    |'""'
     ;
 
 
