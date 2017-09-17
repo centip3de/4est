@@ -146,11 +146,17 @@ class ForestParser(Parser):
                 self._nop_()
             with self._option():
                 self._list_to_stack_()
+            with self._option():
+                self._reverse_()
             self._error('no available options')
 
     @graken()
     def _list_to_stack_(self):
         self._token('l')
+
+    @graken()
+    def _reverse_(self):
+        self._token('R')
 
     @graken()
     def _dec_(self):
@@ -350,6 +356,9 @@ class ForestSemantics(object):
         return ast
 
     def list_to_stack(self, ast):
+        return ast
+
+    def reverse(self, ast):
         return ast
 
     def dec(self, ast):

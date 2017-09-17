@@ -41,12 +41,14 @@ statement
     | reverse
     ;
 
-reverse =
-    'R'
+list_to_stack
+    =
+    "l"
     ;
 
-list_to_stack =
-    'l'
+reverse
+    =
+    "R"
     ;
 
 dec

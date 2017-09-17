@@ -11,7 +11,9 @@ class Operator:
 class ListToStackOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
-        return (None, Stack(stack.pop()))
+        popped = stack.pop()
+        popped = popped if type(popped) == list else [popped]
+        return (None, Stack(popped))
 
 class AndOP(Operator):
     @classmethod
@@ -145,7 +147,7 @@ class SwapOP(Operator):
 class StackToListOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
-        return (stack.mem, stack)
+        return ([x for x in stack.mem], stack)
 
 class ClearStackOP(Operator):
     @classmethod
@@ -161,6 +163,7 @@ class PopOP(Operator):
 class PrintOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):
+        print(stack.mem)
         print(stack.peek())
         return (None, stack)
 

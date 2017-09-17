@@ -8,6 +8,7 @@ class Interpreter():
 
     def interpret(self, ast):
         for op in ast:
+            print(ast)
             self.step(op)
 
     def step(self, node):
@@ -57,7 +58,8 @@ class Interpreter():
             self.stack.push(res)
 
         elif node[0] == 'R':
-            res, self.stack == ReverseStackOP.invoke(None, None, self.stack)
+            res, self.stack = ReverseStackOP.invoke(None, None, self.stack)
+
 
         elif node[0] == '"':
             string = node[1]
