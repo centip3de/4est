@@ -56,6 +56,9 @@ class Interpreter():
             res, self.stack = IntOP.invoke(node[0], None, self.stack)
             self.stack.push(res)
 
+        elif node[0] == 'R':
+            res, self.stack == ReverseStackOP.invoke(None, None, self.stack)
+
         elif node[0] == '"':
             string = node[1]
             if(node[1] == '"'):

@@ -1,6 +1,6 @@
 import unittest
 from forest.stack import Stack
-from forest.interp.operators import SwapOP, ClearStackOP, PopOP, DupOP, ListToStackOP
+from forest.interp.operators import SwapOP, ClearStackOP, PopOP, DupOP, ListToStackOP, ReverseStackOP
 
 class StackOperatorTest(unittest.TestCase):
     def setUp(self):
@@ -36,3 +36,9 @@ class StackOperatorTest(unittest.TestCase):
         assert(out[1].mem[0] == 1)
         assert(out[1].mem[1] == 2)
         assert(out[1].mem[2] == 3)
+
+    def test_reverse_stack_op(self):
+        out = ReverseStackOP.invoke(None, None, self.stack)
+        assert(out[0] == None)
+        assert(out[1].mem[0] == 2)
+        assert(out[1].mem[1] == 1)

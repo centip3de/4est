@@ -61,6 +61,11 @@ class JoinOP(Operator):
         else:
             return (str(left).join([str(x) for x in right]), stack)
 
+class ReverseStackOP(Operator):
+    @classmethod
+    def invoke(cls, left, right, stack):
+        return (None, Stack(stack.mem[::-1]))
+
 class SplitOP(Operator):
     @classmethod
     def invoke(cls, left, right, stack):

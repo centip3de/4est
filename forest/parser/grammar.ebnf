@@ -38,6 +38,11 @@ statement
     | inc
     | nop
     | list_to_stack
+    | reverse
+    ;
+
+reverse =
+    'R'
     ;
 
 list_to_stack =
